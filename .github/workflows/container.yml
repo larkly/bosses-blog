@@ -62,7 +62,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            HUGO_BASEURL=https://${{ github.repository_owner }}.github.io/
+            HUGO_BASEURL=https://klykken.com
             HUGO_ENV=production
           cache-from: type=gha
           cache-to: type=gha,mode=max

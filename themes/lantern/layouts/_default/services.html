@@ -1,0 +1,62 @@
+{{/*
+  Services / portal template.
+
+  Usage — content/services.md (or any page):
+  ---
+  title: "Services"
+  kicker: "What I run"
+  layout: services
+  description: "A small directory of the tools, feeds, and quiet little servers I host."
+  sections:
+    - title: "Reading & writing"
+      note: "The things I open every morning before the kettle boils."
+      services:
+        - name: "Miniflux"
+          url: "https://rss.klykken.com"
+          desc: "Self-hosted RSS reader. Keyboard-first, minimal UI."
+          image: "/images/miniflux.jpg"
+          status: "online"      # online | maintenance | down
+          statusLabel: "Online"
+    - title: "Files & memory"
+      services:
+        - name: "Immich"
+          url: "https://photos.klykken.com"
+          desc: "Photo library with face search and timeline."
+          image: "/images/immich.jpg"
+  ---
+
+  A flat `services:` list at the top level also works (no sections).
+*/}}
+{{ define "main" }}
+<div class="wrap" style="max-width:1080px;">
+  <div class="services-head">
+    {{ with .Params.kicker }}<div class="post-item__tag" style="color:var(--accent);">{{ . }}</div>{{ end }}
+    <h1>{{ .Title }}.</h1>
+    {{ with (or .Description .Params.dek) }}<p>{{ . }}</p>{{ end }}
+  </div>
+
+  {{ .Content }}
+
+  {{ $sections := .Params.sections }}
+  {{ $flat := .Params.services }}
+
+  {{ if $sections }}
+    {{ range $i, $sec := $sections }}
+      <div class="services-section">
+        <div class="services-section__label">§ {{ printf "%02d" (add $i 1) }}</div>
+        <div>
+          <h2 class="services-section__title">{{ $sec.title }}</h2>
+          {{ with $sec.note }}<p class="services-section__note">{{ . }}</p>{{ end }}
+        </div>
+      </div>
+      <div class="services-grid">
+        {{ range $sec.services }}{{ partial "service-card.html" . }}{{ end }}
+      </div>
+    {{ end }}
+  {{ else if $flat }}
+    <div class="services-grid" style="margin-top:1.5rem;">
+      {{ range $flat }}{{ partial "service-card.html" . }}{{ end }}
+    </div>
+  {{ end }}
+</div>
+{{ end }}

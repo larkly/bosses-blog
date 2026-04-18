@@ -1,4 +1,4 @@
-{{ $posts := where .Site.RegularPages "Section" "posts" }}
+{{ $posts := partial "home-posts.html" . }}
 <div class="v-index">
   <div class="wrap" style="max-width:920px;">
     <div class="hero">

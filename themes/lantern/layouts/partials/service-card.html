@@ -1,0 +1,30 @@
+{{/*
+  Renders a single service card. Expects a dict like:
+    { name, url, desc, image, status ("online"|"maintenance"|"down"), statusLabel }
+*/}}
+{{ $status := .status | default "online" }}
+{{ $label := .statusLabel | default (cond (eq $status "online") "Online" (cond (eq $status "maintenance") "Maintenance" "Offline")) }}
+{{ $host := "" }}
+{{ with .url }}
+  {{ $u := urls.Parse . }}
+  {{ $host = $u.Host }}
+{{ end }}
+<a href="{{ .url }}" target="_blank" rel="noopener" class="service-card">
+  {{ if .image }}
+    <div class="service-card__thumb"><img src="{{ .image | relURL }}" alt="{{ .name }}" loading="lazy" /></div>
+  {{ else }}
+    <div class="service-card__thumb service-card__thumb--placeholder">[ {{ .name | lower }} ]</div>
+  {{ end }}
+  <div class="service-card__head">
+    <h3 class="service-card__name">{{ .name }}</h3>
+    <span class="service-card__arrow">↗</span>
+  </div>
+  {{ with .desc }}<p class="service-card__desc">{{ . | markdownify }}</p>{{ end }}
+  <div class="service-card__foot">
+    <span class="service-card__host">{{ $host }}</span>
+    <span class="service-card__status">
+      <span class="service-card__dot{{ if ne $status "online" }} is-down{{ end }}"></span>
+      {{ $label }}
+    </span>
+  </div>
+</a>

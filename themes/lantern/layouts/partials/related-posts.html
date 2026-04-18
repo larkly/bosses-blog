@@ -1,0 +1,33 @@
+{{/*
+  Manual "See also" block — renders at the bottom of a single post.
+  Reads a list of absolute content paths from `relatedPosts` in front matter.
+
+  Usage:
+    relatedPosts:
+      - /posts/other-essay/
+      - /posts/yet-another/
+*/}}
+{{ with .Params.relatedPosts }}
+  {{ $items := slice }}
+  {{ range . }}
+    {{ $p := site.GetPage . }}
+    {{ with $p }}{{ $items = $items | append . }}{{ end }}
+  {{ end }}
+  {{ with $items }}
+  <section class="related-posts" aria-label="See also">
+    <div class="related-posts__label">See also</div>
+    <ul>
+      {{ range $i, $p := . }}
+        {{ $num := printf "%02d" (add $i 1) }}
+        <li>
+          <a href="{{ $p.RelPermalink }}">
+            <span class="related-posts__num">{{ $num }}</span>
+            <span class="related-posts__title">{{ $p.Title }}</span>
+            <span class="related-posts__meta">{{ $p.Params.postkind | default "Essay" }} · {{ $p.Date.Format "Jan 2006" }}</span>
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+{{ end }}

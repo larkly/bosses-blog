@@ -1,5 +1,8 @@
 {{ define "main" }}
 {{ $hasToC := and (gt (len .TableOfContents) 200) (.Params.toc | default true) }}
+{{ $isLink := and (eq (.Params.postkind | default "") "Link") .Params.link }}
+{{ $linkHost := "" }}
+{{ if $isLink }}{{ $linkHost = (urls.Parse .Params.link).Host }}{{ end }}
 <article>
   <header class="post-head">
     <div class="post-head__kicker">{{ .Params.postkind | default "Essay" }}{{ with .Params.categories }} · {{ index . 0 }}{{ end }}</div>
@@ -9,7 +12,24 @@
       {{ if .ReadingTime }}<span>{{ .ReadingTime }} min read</span>{{ end }}
       <span>By {{ .Params.author | default .Site.Params.author }}</span>
     </div>
+    {{ if $isLink }}
+    <p class="post-head__linked">About an article at <a href="{{ .Params.link }}" target="_blank" rel="noopener">{{ $linkHost }}</a></p>
+    {{ end }}
   </header>
+
+  {{ partial "series-box.html" . }}
+
+  {{ with .Params.cover }}
+  <figure class="post-hero">
+    <img src="{{ . | relURL }}" alt="{{ $.Params.coverAlt | default $.Title }}" loading="lazy" />
+    {{ if or $.Params.coverCaption $.Params.coverCredit }}
+    <figcaption>
+      {{ with $.Params.coverCaption }}{{ . }}{{ end }}
+      {{ with $.Params.coverCredit }}<span class="credit">— {{ . }}</span>{{ end }}
+    </figcaption>
+    {{ end }}
+  </figure>
+  {{ end }}
 
   <div class="post-layout {{ if $hasToC }}with-toc{{ end }}">
     {{ if $hasToC }}
@@ -19,15 +39,25 @@
     </aside>
     {{ end }}
 
-    <div class="body">
-      {{ with .Params.dek }}<p style="font-size:1.18rem;color:var(--ink-2);font-style:italic;">{{ . }}</p>{{ end }}
+    <div class="body{{ if ne .Params.dropcap false }} has-dropcap{{ end }}">
+      {{ with .Params.dek }}<div class="post-dek">{{ . }}</div>{{ end }}
       {{ .Content }}
+
+      {{ if $isLink }}
+      <p class="post-link">
+        <a href="{{ .Params.link }}" target="_blank" rel="noopener">
+          Read more at <strong>{{ $linkHost }}</strong> →
+        </a>
+      </p>
+      {{ end }}
 
       {{ with .Params.tags }}
       <div class="tags">
         {{ range . }}<a href="{{ "/tags/" | relURL }}{{ . | urlize }}/" class="tag">#{{ . }}</a>{{ end }}
       </div>
       {{ end }}
+
+      {{ partial "related-posts.html" . }}
 
       {{ if or .PrevInSection .NextInSection }}
       <nav class="post-nav">

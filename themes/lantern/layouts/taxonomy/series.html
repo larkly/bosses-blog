@@ -1,0 +1,27 @@
+{{ define "main" }}
+{{ $posts := sort .Pages "Params.seriesOrder" "asc" }}
+<div class="v-index">
+  <div class="wrap" style="max-width:920px;">
+    <div class="hero">
+      <div class="post-item__tag" style="color:var(--accent);margin-bottom:1rem;">Series · {{ len $posts }} part{{ if ne (len $posts) 1 }}s{{ end }}</div>
+      <h1>{{ .Title }}.</h1>
+      {{ with .Description }}<p>{{ . }}</p>{{ end }}
+      {{ with .Content }}{{ . }}{{ end }}
+    </div>
+    <div class="index-list">
+      <div class="year-group">
+        <div class="year">Parts</div>
+        <div class="year-posts">
+          {{ range $i, $p := $posts }}
+            <a href="{{ .RelPermalink }}" class="idx-row">
+              <span class="idx-date">{{ printf "%02d" (add $i 1) }}</span>
+              <span class="idx-title">{{ .Title }}</span>
+              <span class="idx-kind">{{ .Params.postkind | default "Essay" }}</span>
+            </a>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}

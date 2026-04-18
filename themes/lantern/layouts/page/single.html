@@ -1,7 +1,7 @@
 {{ define "main" }}
 <div class="wrap" style="max-width:900px;">
   <div class="about-head">
-    <div class="post-item__tag" style="color:var(--accent);margin-bottom:0.6rem;">Colophon &amp; about</div>
+    {{ with .Params.kicker }}<div class="post-item__tag" style="color:var(--accent);margin-bottom:0.6rem;">{{ . }}</div>{{ end }}
     <h1>{{ .Title }}.</h1>
   </div>
   <div class="about-grid">

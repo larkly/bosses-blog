@@ -1,0 +1,17 @@
+{{- /*
+  Renders blockquotes. When the blockquote is a GitHub-style alert
+  (i.e. starts with [!NOTE] / [!TIP] / [!IMPORTANT] / [!WARNING] / [!CAUTION]),
+  .Type is "alert" and .AlertType holds the lower-cased type.
+*/ -}}
+{{- if eq .Type "alert" -}}
+<aside class="alert alert--{{ .AlertType }}" role="note">
+  <div class="alert__head">{{ .AlertType }}</div>
+  <div class="alert__body">
+    {{- .Text -}}
+  </div>
+</aside>
+{{- else -}}
+<blockquote>
+  {{- .Text -}}
+</blockquote>
+{{- end -}}

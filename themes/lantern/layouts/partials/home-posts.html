@@ -1,0 +1,11 @@
+{{/*
+  Returns the ordered list of posts for any home layout.
+  - Filters out pages with `hideOnHome: true` (they still appear in /posts/, taxonomies, and RSS).
+  - Promotes pages with `pinned: true` to the top, then falls back to date-descending.
+  Used by partials/home/{column,broadsheet,index}.html.
+*/}}
+{{ $all := where .Site.RegularPages "Section" "posts" }}
+{{ $visible := where $all "Params.hideOnHome" "!=" true }}
+{{ $pinned := where $visible "Params.pinned" true }}
+{{ $rest := where $visible "Params.pinned" "!=" true }}
+{{ return (union $pinned $rest) }}

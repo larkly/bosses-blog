@@ -1,0 +1,31 @@
+{{/*
+  Series banner — renders near the top of a single post that belongs to a series.
+  Reads the `series` taxonomy term(s) attached to the page and lists every part in
+  `seriesOrder` ascending, highlighting the current one.
+
+  Usage in front matter:
+    series: ["Building a Platform"]
+    seriesOrder: 2
+*/}}
+{{ $terms := .GetTerms "series" }}
+{{ with $terms }}
+  {{ $term := index . 0 }}
+  {{ $parts := sort $term.Pages "Params.seriesOrder" "asc" }}
+  {{ $total := len $parts }}
+  {{ $current := 0 }}
+  {{ range $i, $p := $parts }}{{ if eq $p $ }}{{ $current = add $i 1 }}{{ end }}{{ end }}
+  <aside class="series-box" aria-label="Part of a series">
+    <div class="series-box__kicker">Series · Part {{ $current }} of {{ $total }}</div>
+    <h2 class="series-box__title"><a href="{{ $term.RelPermalink }}">{{ $term.Page.Title | default $term.LinkTitle | default $term.Title }}</a></h2>
+    <ol class="series-box__list">
+      {{ range $i, $p := $parts }}
+        {{ $num := printf "%02d" (add $i 1) }}
+        {{ if eq $p $ }}
+          <li class="is-current"><span class="num">{{ $num }}</span><span class="title">{{ .Title }}</span><span class="here">← you are here</span></li>
+        {{ else }}
+          <li><a href="{{ .RelPermalink }}"><span class="num">{{ $num }}</span><span class="title">{{ .Title }}</span></a></li>
+        {{ end }}
+      {{ end }}
+    </ol>
+  </aside>
+{{ end }}

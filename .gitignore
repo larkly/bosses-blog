@@ -1,4 +1,34 @@
+# Hugo build output
 /public/
+/public-*/
 /resources/
 /.hugo_build.lock
-public-*/
+
+# Hugo module cache
+/.hugo_cache/
+
+# Claude / agent scratch
+/.claude/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Local env / secrets
+.env
+.env.*
+!.env.example
+
+# Build artefacts
+/node_modules/
+npm-debug.log
+yarn-error.log
+
+# Container / CI local runs
+*.tar
+*.tar.gz

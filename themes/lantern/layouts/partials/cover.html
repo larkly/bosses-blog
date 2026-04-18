@@ -1,0 +1,74 @@
+{{/*
+  cover.html — shared cover-image partial.
+
+  Accepts a dict:
+    page      (required) Page whose .Params.cover/coverAlt/coverCaption/
+                         coverCredit/coverFocus/coverAspect/coverFit are read.
+    class     (required) Wrapper class (e.g. "post-hero", "feature__lead-cover").
+    link      (optional) If set, wraps the image in an <a href=...> instead of
+                         emitting a <figure> with caption.
+    maxWidth  (optional) Max pixel width to downscale page-resource images to.
+                         Default 1600 (suits ~800px display at 2x DPR).
+
+  Front-matter knobs (all optional, all apply to both call sites):
+    coverFocus   object-position value, e.g. "50% 30%", "center top"
+    coverAspect  aspect-ratio value, e.g. "4/3", "1/1", or "auto"
+    coverFit     object-fit value, "cover" (default) or "contain"
+*/}}
+{{ $p := .page }}
+{{ $maxWidth := .maxWidth | default 1600 }}
+{{ with $p.Params.cover }}
+  {{ $styles := slice }}
+  {{ with $p.Params.coverFocus }}{{ $styles = $styles | append (printf "object-position: %s" .) }}{{ end }}
+  {{ with $p.Params.coverAspect }}{{ $styles = $styles | append (printf "aspect-ratio: %s" .) }}{{ end }}
+  {{ with $p.Params.coverFit }}{{ $styles = $styles | append (printf "object-fit: %s" .) }}{{ end }}
+  {{ $styleAttr := "" }}{{ if $styles }}{{ $styleAttr = delimit $styles "; " }}{{ end }}
+  {{/* Resolve the cover:
+       - absolute URL or leading slash -> use as-is (via relURL)
+       - otherwise prefer a page resource (leaf-bundle sibling),
+         falling back to site-root relURL for static/ assets. */}}
+  {{ $raw := . }}
+  {{ $src := "" }}
+  {{ $w := 0 }}
+  {{ $h := 0 }}
+  {{ if or (hasPrefix $raw "/") (hasPrefix $raw "http://") (hasPrefix $raw "https://") }}
+    {{ $src = $raw | relURL }}
+  {{ else }}
+    {{ with $p.Resources.GetMatch $raw }}
+      {{/* Resize only if it's an image larger than maxWidth on either axis. */}}
+      {{ $img := . }}
+      {{ if eq .ResourceType "image" }}
+        {{ if or (gt .Width $maxWidth) (gt .Height $maxWidth) }}
+          {{ $img = .Fit (printf "%dx%d q85" $maxWidth $maxWidth) }}
+        {{ end }}
+        {{ $src = $img.RelPermalink }}
+        {{ $w = $img.Width }}
+        {{ $h = $img.Height }}
+      {{ else }}
+        {{ $src = .RelPermalink }}
+      {{ end }}
+    {{ else }}
+      {{ $src = $raw | relURL }}
+    {{ end }}
+  {{ end }}
+  {{ $alt := $p.Params.coverAlt | default $p.Title }}
+  {{ $dim := "" }}{{ if and (gt $w 0) (gt $h 0) }}{{ $dim = printf ` width="%d" height="%d"` $w $h }}{{ end }}
+  {{/* Cap at native width so small images aren't upscaled; figure centers. */}}
+  {{ $wrapStyle := "" }}
+  {{ if gt $w 0 }}{{ $wrapStyle = printf "max-width: %dpx; margin-left: auto; margin-right: auto;" $w }}{{ end }}
+  {{ if $.link }}
+    <a href="{{ $.link }}" class="{{ $.class }}"{{ with $wrapStyle }} style="{{ . | safeCSS }}"{{ end }}>
+      <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy"{{ $dim | safeHTMLAttr }}{{ with $styleAttr }} style="{{ . | safeCSS }}"{{ end }} />
+    </a>
+  {{ else }}
+    <figure class="{{ $.class }}"{{ with $wrapStyle }} style="{{ . | safeCSS }}"{{ end }}>
+      <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy"{{ $dim | safeHTMLAttr }}{{ with $styleAttr }} style="{{ . | safeCSS }}"{{ end }} />
+      {{ if or $p.Params.coverCaption $p.Params.coverCredit }}
+      <figcaption>
+        {{ with $p.Params.coverCaption }}{{ . }}{{ end }}
+        {{ with $p.Params.coverCredit }}<span class="credit">— {{ . }}</span>{{ end }}
+      </figcaption>
+      {{ end }}
+    </figure>
+  {{ end }}
+{{ end }}

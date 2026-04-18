@@ -12,11 +12,7 @@
     {{ with $feature }}
     <div class="feature">
       <article class="feature__lead">
-        {{ with .Params.cover }}
-        <a href="{{ $feature.RelPermalink }}" class="feature__lead-cover">
-          <img src="{{ . | relURL }}" alt="{{ $feature.Params.coverAlt | default $feature.Title }}" loading="lazy" />
-        </a>
-        {{ end }}
+        {{ partial "cover.html" (dict "page" . "class" "feature__lead-cover" "link" $feature.RelPermalink) }}
         <div class="post-item__tag" style="color:var(--accent);margin:0 0 0.3rem;">{{ .Params.postkind | default "Feature" }} · {{ .Date.Format "January 2" }}</div>
         <h2><a href="{{ .RelPermalink }}" style="text-decoration:none;color:inherit;">{{ .Title }}</a></h2>
         <p class="dropcap">{{ .Summary | plainify | truncate 320 }}</p>

@@ -19,17 +19,7 @@
 
   {{ partial "series-box.html" . }}
 
-  {{ with .Params.cover }}
-  <figure class="post-hero">
-    <img src="{{ . | relURL }}" alt="{{ $.Params.coverAlt | default $.Title }}" loading="lazy" />
-    {{ if or $.Params.coverCaption $.Params.coverCredit }}
-    <figcaption>
-      {{ with $.Params.coverCaption }}{{ . }}{{ end }}
-      {{ with $.Params.coverCredit }}<span class="credit">— {{ . }}</span>{{ end }}
-    </figcaption>
-    {{ end }}
-  </figure>
-  {{ end }}
+  {{ partial "cover.html" (dict "page" . "class" "post-hero") }}
 
   <div class="post-layout {{ if $hasToC }}with-toc{{ end }}">
     {{ if $hasToC }}
@@ -59,10 +49,20 @@
 
       {{ partial "related-posts.html" . }}
 
-      {{ if or .PrevInSection .NextInSection }}
+      {{/* Prev/Next, skipping pages flagged hideOnHome. */}}
+      {{ $siblings := where (where .Site.RegularPages "Section" .Section) ".Params.hideOnHome" "ne" true }}
+      {{ $cur := .RelPermalink }}
+      {{ $idx := -1 }}
+      {{ range $i, $p := $siblings }}{{ if eq $p.RelPermalink $cur }}{{ $idx = $i }}{{ end }}{{ end }}
+      {{ $prev := "" }}{{ $next := "" }}
+      {{ if ge $idx 0 }}
+        {{ if gt $idx 0 }}{{ $prev = index $siblings (sub $idx 1) }}{{ end }}
+        {{ if lt $idx (sub (len $siblings) 1) }}{{ $next = index $siblings (add $idx 1) }}{{ end }}
+      {{ end }}
+      {{ if or $prev $next }}
       <nav class="post-nav">
-        {{ with .PrevInSection }}<a href="{{ .RelPermalink }}"><span class="dir">← Previous</span>{{ .Title }}</a>{{ else }}<span></span>{{ end }}
-        {{ with .NextInSection }}<a href="{{ .RelPermalink }}" class="next"><span class="dir">Next →</span>{{ .Title }}</a>{{ else }}<span></span>{{ end }}
+        {{ with $prev }}<a href="{{ .RelPermalink }}"><span class="dir">← Previous</span>{{ .Title }}</a>{{ else }}<span></span>{{ end }}
+        {{ with $next }}<a href="{{ .RelPermalink }}" class="next"><span class="dir">Next →</span>{{ .Title }}</a>{{ else }}<span></span>{{ end }}
       </nav>
       {{ end }}
     </div>

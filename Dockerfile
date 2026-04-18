@@ -17,3 +17,5 @@ RUN rm -rf /usr/share/nginx/html/* \
 COPY --from=builder /src/public /usr/share/nginx/html
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://127.0.0.1:8080/ >/dev/null || exit 1
+ENTRYPOINT ["nginx"]
+CMD ["-g", "daemon off;"]

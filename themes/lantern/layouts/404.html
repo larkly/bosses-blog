@@ -1,0 +1,10 @@
+{{ define "main" }}
+<div class="fourofour">
+  <div>
+    <p class="num">404</p>
+    <h1>This page has wandered off.</h1>
+    <p>You've reached a URL that doesn't exist here — or used to, and doesn't anymore. Most things are still where you left them; try the <a href="{{ "/" | relURL }}">front page</a> or the <a href="{{ "/archive/" | relURL }}">complete archive</a>.</p>
+    <a href="{{ "/" | relURL }}" class="tag" style="padding:0.5rem 1rem;">← Back to writing</a>
+  </div>
+</div>
+{{ end }}

@@ -1,0 +1,10 @@
+{{ define "main" }}
+  {{ $layout := .Site.Params.homeLayout | default "column" }}
+  {{ if eq $layout "broadsheet" }}
+    {{ partial "home/broadsheet.html" . }}
+  {{ else if eq $layout "index" }}
+    {{ partial "home/index.html" . }}
+  {{ else }}
+    {{ partial "home/column.html" . }}
+  {{ end }}
+{{ end }}

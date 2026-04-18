@@ -1,0 +1,50 @@
+{{ define "main" }}
+{{ $hasToC := and (gt (len .TableOfContents) 200) (.Params.toc | default true) }}
+<article>
+  <header class="post-head">
+    <div class="post-head__kicker">{{ .Params.postkind | default "Essay" }}{{ with .Params.categories }} · {{ index . 0 }}{{ end }}</div>
+    <h1 class="post-head__title">{{ .Title }}</h1>
+    <div class="post-head__meta">
+      <span>{{ .Date.Format "January 2, 2006" }}</span>
+      {{ if .ReadingTime }}<span>{{ .ReadingTime }} min read</span>{{ end }}
+      <span>By {{ .Params.author | default .Site.Params.author }}</span>
+    </div>
+  </header>
+
+  <div class="post-layout {{ if $hasToC }}with-toc{{ end }}">
+    {{ if $hasToC }}
+    <aside class="toc" aria-label="Table of contents">
+      <div class="toc__label">Contents</div>
+      {{ .TableOfContents }}
+    </aside>
+    {{ end }}
+
+    <div class="body">
+      {{ with .Params.dek }}<p style="font-size:1.18rem;color:var(--ink-2);font-style:italic;">{{ . }}</p>{{ end }}
+      {{ .Content }}
+
+      {{ with .Params.tags }}
+      <div class="tags">
+        {{ range . }}<a href="{{ "/tags/" | relURL }}{{ . | urlize }}/" class="tag">#{{ . }}</a>{{ end }}
+      </div>
+      {{ end }}
+
+      {{ if or .PrevInSection .NextInSection }}
+      <nav class="post-nav">
+        {{ with .PrevInSection }}<a href="{{ .RelPermalink }}"><span class="dir">← Previous</span>{{ .Title }}</a>{{ else }}<span></span>{{ end }}
+        {{ with .NextInSection }}<a href="{{ .RelPermalink }}" class="next"><span class="dir">Next →</span>{{ .Title }}</a>{{ else }}<span></span>{{ end }}
+      </nav>
+      {{ end }}
+    </div>
+
+    {{ if $hasToC }}
+    <aside class="rail" aria-label="Post meta">
+      <div class="rail__item"><div class="rail__label">Published</div><div class="rail__val">{{ .Date.Format "January 2, 2006" }}</div></div>
+      {{ if .ReadingTime }}<div class="rail__item"><div class="rail__label">Reading time</div><div class="rail__val">{{ .ReadingTime }} min · {{ .WordCount }} words</div></div>{{ end }}
+      <div class="rail__item"><div class="rail__label">Filed under</div><div class="rail__val">{{ .Params.postkind | default "Essay" }}{{ with .Params.categories }} · {{ delimit . " · " }}{{ end }}</div></div>
+      <div class="rail__item"><div class="rail__label">Share</div><div class="rail__val"><a href="#" data-copy-link>Copy link</a></div></div>
+    </aside>
+    {{ end }}
+  </div>
+</article>
+{{ end }}

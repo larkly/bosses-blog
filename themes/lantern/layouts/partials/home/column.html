@@ -1,0 +1,16 @@
+{{ $posts := where .Site.RegularPages "Section" "posts" }}
+{{ $n := .Site.Params.postsOnHome | default 12 }}
+<div class="v-column">
+  <div class="wrap" style="max-width:760px;">
+    <div class="lede">
+      <div class="lede__kicker">{{ .Site.Params.description }}</div>
+      <h1 class="lede__title"><em>{{ .Site.Title }}</em> — {{ with .Site.Params.tagline }}{{ . }}{{ else }}field notes from a working writer.{{ end }}</h1>
+      {{ with .Site.Params.dek }}<p class="lede__dek">{{ . }}</p>{{ end }}
+    </div>
+    <div class="post-list">
+      {{ range first $n $posts }}
+        {{ partial "post-item.html" . }}
+      {{ end }}
+    </div>
+  </div>
+</div>

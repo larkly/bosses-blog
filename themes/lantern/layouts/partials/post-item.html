@@ -1,0 +1,10 @@
+{{/* Single post-list row, used by home (column) and section list views */}}
+{{ $kind := .Params.postkind | default "Essay" }}
+<a href="{{ .RelPermalink }}" class="post-item">
+  <span class="post-item__date">{{ .Date.Format "Jan 02 · 2006" }}</span>
+  <div>
+    <h2 class="post-item__title">{{ if eq $kind "Link" }}→ <span style="color:var(--accent)">{{ .Title }}</span>{{ else }}{{ .Title }}{{ end }}</h2>
+    <p class="post-item__excerpt">{{ .Summary | plainify | truncate 220 }}</p>
+    <span class="post-item__tag">{{ $kind }}{{ if .ReadingTime }} · {{ .ReadingTime }} min{{ end }}</span>
+  </div>
+</a>

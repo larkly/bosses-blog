@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang | default "en" }}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ if .IsHome }}{{ .Site.Title }} — {{ .Site.Params.description }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}" />
+  <meta name="author" content="{{ .Site.Params.author }}" />
+
+  {{ with .OutputFormats.Get "RSS" }}
+    <link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ $.Site.Title }}" />
+  {{ end }}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter+Tight:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ "css/styles.css" | relURL }}" />
+
+  {{/* Inline tokens from config so site author can theme without rebuilding CSS */}}
+  <style>
+    :root {
+      --read-w: {{ .Site.Params.readWidth | default 64 }}ch;
+      --accent: oklch({{ .Site.Params.accentLight }} {{ .Site.Params.accentChroma }} {{ .Site.Params.accentHue }});
+      --accent-soft: oklch({{ .Site.Params.accentLight }} {{ .Site.Params.accentChroma }} {{ .Site.Params.accentHue }} / 0.12);
+      {{ if eq .Site.Params.fontPairing "garamond" }}
+      --f-display: 'EB Garamond', Georgia, serif; --f-body: 'EB Garamond', Georgia, serif;
+      {{ else if eq .Site.Params.fontPairing "playfair" }}
+      --f-display: 'Playfair Display', Georgia, serif; --f-body: 'IBM Plex Sans', -apple-system, sans-serif;
+      {{ else }}
+      --f-display: 'Fraunces', Georgia, serif; --f-body: 'Source Serif 4', Georgia, serif;
+      {{ end }}
+    }
+  </style>
+
+  {{/* Theme: set before paint to avoid flash */}}
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('lantern.theme') || '{{ .Site.Params.defaultTheme | default "auto" }}';
+        if (saved === 'light' || saved === 'dark') document.documentElement.setAttribute('data-theme', saved);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+  {{ partial "header.html" . }}
+  <main id="main">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+  <script src="{{ "js/app.js" | relURL }}" defer></script>
+</body>
+</html>

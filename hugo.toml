@@ -1,0 +1,65 @@
+baseURL = "http://localhost:1313/"
+languageCode = "en-us"
+title = "Lantern"
+theme = "lantern"
+enableRobotsTXT = true
+enableEmoji = false
+summaryLength = 40
+
+[params]
+  description = "Field notes from a working writer."
+  author = "Iris Hallberg"
+  # Tweakable defaults — wired into the template via $.Site.Params
+  fontPairing = "fraunces"   # fraunces | garamond | playfair
+  accentHue = 30             # OKLCH hue 0-360
+  accentChroma = 0.15
+  accentLight = 0.55
+  readWidth = 64             # ch
+  defaultTheme = "auto"      # auto | light | dark
+  homeLayout = "column"      # column | broadsheet | index
+  postsOnHome = 12
+  showRSS = true
+
+[params.colophon]
+  bodyFont = "Source Serif 4"
+  displayFont = "Fraunces"
+  monoFont = "JetBrains Mono"
+
+[menu]
+  [[menu.main]]
+    name = "Writing"
+    url = "/"
+    weight = 10
+  [[menu.main]]
+    name = "Archive"
+    url = "/posts/"
+    weight = 20
+  [[menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 30
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 40
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+  [markup.highlight]
+    noClasses = false
+    lineNos = false
+    style = "monokai"
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]

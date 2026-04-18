@@ -1,0 +1,9 @@
+<footer class="site-foot">
+  <div class="site-foot__inner">
+    <div>© {{ now.Format "2006" }} · {{ .Site.Params.author }} · Set in {{ .Site.Params.colophon.displayFont }} &amp; {{ .Site.Params.colophon.bodyFont }}</div>
+    <div>
+      {{ with .OutputFormats.Get "RSS" }}<a href="{{ .RelPermalink }}">RSS</a> · {{ end }}
+      <a href="{{ "/about/" | relURL }}">Colophon</a>
+    </div>
+  </div>
+</footer>

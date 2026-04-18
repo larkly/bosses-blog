@@ -1,0 +1,12 @@
+name = "Lantern"
+license = "MIT"
+licenselink = ""
+description = "An editorial Hugo blog theme with three home layouts, dark/light mode, and typographic focus."
+homepage = "https://example.com/"
+tags = ["blog", "minimal", "editorial", "dark-mode", "responsive", "typography"]
+features = ["tags", "categories", "toc", "rss", "archive"]
+min_version = "0.125.0"
+
+[author]
+  name = "Lantern"
+  homepage = ""

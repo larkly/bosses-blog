@@ -1,0 +1,26 @@
+{{ $posts := where .Site.RegularPages "Section" "posts" }}
+<div class="v-index">
+  <div class="wrap" style="max-width:920px;">
+    <div class="hero">
+      <div class="post-item__tag" style="color:var(--accent);margin-bottom:1rem;">The complete index</div>
+      <h1>Everything, in reverse.</h1>
+      {{ with .Site.Params.indexBlurb }}<p>{{ . }}</p>{{ else }}<p>A running list of every essay, note, and link, weighted by date. The long things and the small ones share a line.</p>{{ end }}
+    </div>
+    <div class="index-list">
+      {{ range ($posts.GroupByDate "2006") }}
+        <div class="year-group">
+          <div class="year">{{ .Key }}</div>
+          <div class="year-posts">
+            {{ range .Pages }}
+              <a href="{{ .RelPermalink }}" class="idx-row">
+                <span class="idx-date">{{ .Date.Format "Jan 02" }}</span>
+                <span class="idx-title">{{ if eq (.Params.postkind | default "") "Link" }}→ {{ end }}{{ .Title }}</span>
+                <span class="idx-kind">{{ .Params.postkind | default "Essay" }}</span>
+              </a>
+            {{ end }}
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</div>

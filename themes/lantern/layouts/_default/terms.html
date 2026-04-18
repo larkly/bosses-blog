@@ -1,0 +1,19 @@
+{{ define "main" }}
+{{/* Tag cloud / terms list — sized by post count */}}
+<div class="wrap" style="max-width:900px;">
+  <div class="tag-cloud">
+    <div class="post-item__tag" style="color:var(--accent);margin-bottom:0.6rem;">{{ .Title }}</div>
+    <h1>What I've written about, weighted by frequency.</h1>
+    <div class="cloud">
+      {{ range .Data.Terms.Alphabetical }}
+        {{ $count := .Count }}
+        {{ $size := "t-sm" }}
+        {{ if ge $count 30 }}{{ $size = "t-xl" }}
+        {{ else if ge $count 20 }}{{ $size = "t-lg" }}
+        {{ else if ge $count 10 }}{{ $size = "t-md" }}{{ end }}
+        <a href="{{ .Page.RelPermalink }}" class="{{ $size }}">{{ .Page.Title }}<span class="count">{{ $count }}</span></a>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

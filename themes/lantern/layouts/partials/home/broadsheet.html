@@ -1,0 +1,42 @@
+{{ $posts := where .Site.RegularPages "Section" "posts" }}
+{{ $feature := index $posts 0 }}
+{{ $sides := first 4 (after 1 $posts) }}
+{{ $cols := first 3 (after 5 $posts) }}
+<div class="v-broadsheet">
+  <div class="wrap">
+    <div class="masthead">
+      <h1 class="masthead__title">{{ .Site.Title }}</h1>
+      <div class="masthead__sub">{{ now.Format "Monday, 02 January 2006" }} · {{ .Site.Params.description }}</div>
+    </div>
+
+    {{ with $feature }}
+    <div class="feature">
+      <article class="feature__lead">
+        <div class="post-item__tag" style="color:var(--accent);margin:0 0 0.3rem;">{{ .Params.postkind | default "Feature" }} · {{ .Date.Format "January 2" }}</div>
+        <h2><a href="{{ .RelPermalink }}" style="text-decoration:none;color:inherit;">{{ .Title }}</a></h2>
+        <p class="dropcap">{{ .Summary | plainify | truncate 320 }}</p>
+        <p><a href="{{ .RelPermalink }}">Continue reading →</a></p>
+      </article>
+      <aside class="feature__side">
+        {{ range $sides }}
+          <div class="side-item">
+            <div class="side-item__kicker">{{ .Params.postkind | default "Post" }} · {{ .Date.Format "Jan 02" }}</div>
+            <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+            <span class="meta">{{ if .ReadingTime }}{{ .ReadingTime }} min{{ end }}{{ with .Params.tags }} · {{ delimit . " · " }}{{ end }}</span>
+          </div>
+        {{ end }}
+      </aside>
+    </div>
+    {{ end }}
+
+    <div class="columns">
+      {{ range $cols }}
+        <article class="col-item">
+          <span class="meta">{{ .Params.postkind | default "Post" }} · {{ .Date.Format "Jan 02" }}{{ if .ReadingTime }} · {{ .ReadingTime }} min{{ end }}</span>
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <p>{{ .Summary | plainify | truncate 140 }}</p>
+        </article>
+      {{ end }}
+    </div>
+  </div>
+</div>

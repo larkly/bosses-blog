@@ -25,6 +25,22 @@
 
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paint);
 
+  // Mobile nav toggle
+  const navBtn = document.getElementById('nav-toggle');
+  const nav = document.getElementById('site-nav');
+  if (navBtn && nav) {
+    navBtn.addEventListener('click', function() {
+      const open = nav.classList.toggle('is-open');
+      navBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        nav.classList.remove('is-open');
+        navBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
   // Copy-link share button on posts
   document.querySelectorAll('[data-copy-link]').forEach(a => {
     a.addEventListener('click', e => {

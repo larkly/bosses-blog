@@ -32,14 +32,14 @@ images, series, link posts, and a self-hosted services directory.
 ### As a Git submodule (recommended for now)
 
 ```sh
-git submodule add https://github.com/<you>/lantern.git themes/lantern
+git submodule add https://github.com/larkly/hugo-lantern.git themes/lantern
 ```
 
 ### As a Hugo module
 
 ```sh
-hugo mod init github.com/<you>/<site>
-hugo mod get github.com/<you>/lantern
+hugo mod init github.com/larkly/hugo-lantern
+hugo mod get github.com/larkly/hugo-lantern
 ```
 
 Add to `hugo.toml`:

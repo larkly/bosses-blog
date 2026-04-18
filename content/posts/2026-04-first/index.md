@@ -20,4 +20,4 @@ When Claude Design had a package ready, I passed it over to Claude Code to imple
 
 So I guess vibe coding will be making me write more. I guess at least that's a good thing.
 
-Check out [about](/about) where I've written a little more about yak shaving and how I made the site.
+Check out [about](/about/) where I've written a little more about yak shaving and how I made the site.

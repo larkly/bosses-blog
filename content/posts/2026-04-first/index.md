@@ -7,7 +7,7 @@ postkind: Essay
 tags: [blog]
 #categories: [Howto]
 #draft: true
-cover: meme-claude-lotsofwork.png
+cover: meme-claude-lotsofwork.webp
 coverAspect: "auto"
 pinned: true
 ---

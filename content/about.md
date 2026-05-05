@@ -32,11 +32,11 @@ The [original Ren & Stimpy joke](https://youtu.be/trXjZ70ab1Q) is that on Yak Sh
 
 ## Why the job is yak shaving
 
-Platform engineering is yak shaving professionalised. Every interesting problem is six problems deep. You don't build a deploy pipeline; you build the thing that builds the thing that builds the pipeline, because the pipeline framework was last updated in 2019 and no longer works with your identity provider, which was chosen because the previous one was sunset by a vendor who was acquired by a cloud provider who changed the auth API on a Tuesday.
+Platform development is yak shaving professionalised. Every interesting problem is six problems deep. You don't build a deploy pipeline; you build the thing that builds the thing that builds the pipeline, because the pipeline framework was last updated in 2019 and no longer works with your identity provider, which was chosen because the previous one was sunset by a vendor who was acquired by a cloud provider who suddenly changed the auth API.
 
-Consulting is yak shaving with a stakeholder. The client asked for one thing; the yak is four layers down; the stakeholder would like to know why the yak is relevant.
+Consulting is yak shaving with a stakeholder who pays you to fix a concrete issue. The client asked for one thing; the yak is four layers down; the stakeholder would like to know why the yak is relevant.
 
-Startups are yak shaving with no runway. Big corp is yak shaving with process on top. Open source is the same work, except other people get to be grateful for it. And then there's AI coding, where the yak is plausible enough that you only notice that it wasn't real ten commits later, and then you're out of tokens.
+Startups are yak shaving with a runway. Big corp is yak shaving with process on top, so you'll be in meetings to defend it. Open source is the same work, except some random people get to be grateful for it. And then there's AI coding, where the yak is plausible enough that you only notice that it wasn't real ten commits later, and then you're out of tokens.
 
 ## What you'll find here
 
